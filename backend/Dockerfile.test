@@ -1,0 +1,18 @@
+# Alternative Dockerfile for running tests in Docker
+# Usage: docker build -f Dockerfile.test -t ticket-booking-test .
+#        docker run ticket-booking-test
+
+FROM maven:3.9-eclipse-temurin-21
+
+WORKDIR /app
+
+# Copy pom.xml and download dependencies
+COPY pom.xml .
+RUN mvn dependency:go-offline -B
+
+# Copy source code
+COPY src ./src
+
+# Run tests
+CMD ["mvn", "test"]
+

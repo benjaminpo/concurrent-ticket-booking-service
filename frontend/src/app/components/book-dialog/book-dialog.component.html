@@ -1,0 +1,75 @@
+<h2 mat-dialog-title>
+  <mat-icon>confirmation_number</mat-icon>
+  Book Tickets
+</h2>
+
+<mat-dialog-content>
+  <div class="event-info">
+    <h3>{{ event.name }}</h3>
+    <p class="description">{{ event.description }}</p>
+    <p class="availability">
+      <mat-icon>event_seat</mat-icon>
+      <strong>{{ event.availableTickets }}</strong> tickets available
+    </p>
+  </div>
+
+  <form [formGroup]="bookingForm" class="booking-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>User ID</mat-label>
+      <input 
+        matInput 
+        formControlName="userId" 
+        placeholder="Enter your user ID"
+        [disabled]="loading">
+      <mat-icon matPrefix>person</mat-icon>
+      <mat-error *ngIf="userId?.hasError('required')">
+        User ID is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Number of Tickets</mat-label>
+      <input 
+        matInput 
+        type="number" 
+        formControlName="ticketCount"
+        [disabled]="loading"
+        min="1"
+        [max]="event.availableTickets">
+      <mat-icon matPrefix>confirmation_number</mat-icon>
+      <mat-hint>Max: {{ event.availableTickets }} tickets</mat-hint>
+      <mat-error *ngIf="ticketCount?.hasError('required')">
+        Number of tickets is required
+      </mat-error>
+      <mat-error *ngIf="ticketCount?.hasError('min')">
+        Must book at least 1 ticket
+      </mat-error>
+      <mat-error *ngIf="ticketCount?.hasError('max')">
+        Cannot book more than {{ event.availableTickets }} tickets
+      </mat-error>
+    </mat-form-field>
+  </form>
+
+  <div *ngIf="loading" class="loading-overlay">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Processing your booking...</p>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button 
+    mat-button 
+    (click)="onCancel()"
+    [disabled]="loading">
+    Cancel
+  </button>
+  <button 
+    mat-raised-button 
+    color="primary"
+    (click)="onSubmit()"
+    [disabled]="loading || bookingForm.invalid">
+    <mat-icon>check</mat-icon>
+    Confirm Booking
+  </button>
+</mat-dialog-actions>
+

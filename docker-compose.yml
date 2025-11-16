@@ -1,0 +1,50 @@
+services:
+  # Backend service - Spring Boot
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ticket-booking-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SERVER_PORT=8080
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/events"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    networks:
+      - ticket-booking-network
+    restart: unless-stopped
+
+  # Frontend service - Angular with Nginx
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ticket-booking-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    networks:
+      - ticket-booking-network
+    restart: unless-stopped
+
+networks:
+  ticket-booking-network:
+    driver: bridge
+
+# Volumes for production (optional - can be used for persistent data)
+# volumes:
+#   postgres-data:
+

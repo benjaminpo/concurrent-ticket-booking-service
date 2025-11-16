@@ -1,0 +1,42 @@
+# Backend (Maven/Spring Boot)
+backend/target/
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+backend/.idea/
+backend/*.iml
+backend/*.ipr
+backend/*.iws
+backend/.settings/
+backend/.classpath
+backend/.project
+backend/.vscode/
+
+# Frontend (Node/Angular)
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/.vscode/
+frontend/*.log
+frontend/.DS_Store
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+
